@@ -33,7 +33,7 @@ You need the `aias-memory` repo (this plugin lives in its `openclaw/`
 folder) and a checkout of the NEDB engine's Python package.
 
 ```bash
-git clone <aias-memory repo> && cd aias-memory
+git clone https://github.com/aiassistsecure/aias-memory.git && cd aias-memory
 python3 -m venv venv
 venv/bin/pip install -r requirements.txt
 

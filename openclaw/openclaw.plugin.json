@@ -32,5 +32,5 @@
   "description": "Replaces OpenClaw's context assembly with the AiAS memory stack: extracted conversational facts (confidence- and PII-filtered), a NEDB-backed discussion window, and broadcast directives + knowledge base, all stored in NEDB, an embedded journal-backed database. Distilled from AiAS by INTERCHAINED LLC.",
   "id": "aias-memory",
   "name": "AiAS Memory for OpenClaw, powered by NEDB",
-  "version": "1.1.0"
+  "version": "1.1.1"
 }

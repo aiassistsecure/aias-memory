@@ -55,7 +55,7 @@ is a directory on disk you can inspect, back up, and time-travel.
 ## Quickstart
 
 ```bash
-git clone <this repo> && cd aias-memory
+git clone https://github.com/aiassistsecure/aias-memory.git && cd aias-memory
 python3 -m venv venv
 venv/bin/pip install -r requirements.txt
 
