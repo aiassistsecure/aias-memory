@@ -254,6 +254,14 @@ class PromptAssembler:
         history = self.discussion.get_messages(workspace_id, limit=history_limit)
 
         facts_block = memory.format_session_memory(facts) if (memory and facts) else None
+        # Split blocks for context-boundary-aware callers (the OpenClaw
+        # plugin): system_block is the directive/KB foundation only,
+        # context_block is the guarded facts data. The composed
+        # system_prompt below remains the canonical AiAS layering.
+        system_block = self.build_system_prompt(agent_id=agent_id) or None
+        context_block = None
+        if facts_block:
+            context_block = MEMORY_VISIBILITY_GUARD.strip() + "\n\n" + facts_block
         system_prompt = self.build_system_prompt(
             agent_id=agent_id,
             client_system_prompt=client_system_prompt,
@@ -276,6 +284,8 @@ class PromptAssembler:
         }
         return {
             "messages": messages,
+            "system_block": system_block,
+            "context_block": context_block,
             "session_id": session_id,
             "history_limit": history_limit,
             "layers": layers,

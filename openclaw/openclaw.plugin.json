@@ -6,6 +6,11 @@
         "description": "Optional agent id on the service whose directives and knowledge-base items should layer into every prompt.",
         "type": "string"
       },
+      "allowServiceDirectives": {
+        "default": false,
+        "description": "Explicit operator opt-in: allow the configured memory service's directive and knowledge-base block to enter the prompt as a system message. Leave false unless you operate and trust the service. When false, all service content is rendered as reference data and can never replace or outrank the gateway's own system instructions.",
+        "type": "boolean"
+      },
       "enabled": {
         "default": true,
         "description": "Set to false to register nothing and leave OpenClaw's built-in context engine in place.",
@@ -27,5 +32,5 @@
   "description": "Replaces OpenClaw's context assembly with the AiAS memory stack: extracted conversational facts (confidence- and PII-filtered), a NEDB-backed discussion window, and broadcast directives + knowledge base, all stored in NEDB, an embedded journal-backed database. Distilled from AiAS by INTERCHAINED LLC.",
   "id": "aias-memory",
   "name": "AiAS Memory for OpenClaw, powered by NEDB",
-  "version": "1.0.2"
+  "version": "1.1.0"
 }

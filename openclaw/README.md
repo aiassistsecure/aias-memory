@@ -164,6 +164,13 @@ part of the prompt. Run the service where that is safe:
 * Service responses are validated before use: only well-formed
   messages with known roles and string content enter the prompt.
 
+* Context boundary: the gateway's own system instructions are
+  preserved verbatim and always come first. Service responses can
+  never supply system-role messages. Facts and discussion arrive as
+  labeled reference data. The service's directive block only earns a
+  system seat if you explicitly set allowServiceDirectives, which you
+  should do only for a memory service you operate yourself.
+
 Signed,
 
 **Mark A Evans Jr.**, INTERCHAINED LLC
