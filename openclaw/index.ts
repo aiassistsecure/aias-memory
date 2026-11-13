@@ -56,6 +56,59 @@ type PluginApi = {
 
 const DEFAULT_SERVICE_URL = "http://127.0.0.1:8000";
 
+// Transport policy (ClawScan MCP06): conversation content crosses the
+// service connection, so plaintext HTTP is only acceptable on loopback,
+// where the traffic never leaves the machine. Remote destinations must
+// use HTTPS. Anything else is rejected and the engine does not register.
+const isLoopbackHost = (hostname: string): boolean => {
+  const h = hostname.replace(/^\[|\]$/g, "").toLowerCase();
+  return (
+    h === "localhost" ||
+    h.endsWith(".localhost") ||
+    h === "::1" ||
+    /^127(?:\.\d{1,3}){3}$/.test(h)
+  );
+};
+
+const resolveServiceUrl = (raw: string): string => {
+  const trimmed = raw.replace(/\/$/, "");
+  let url: URL;
+  try {
+    url = new URL(trimmed);
+  } catch {
+    throw new Error(`aias-memory: serviceUrl is not a valid URL: ${raw}`);
+  }
+  if (url.protocol === "https:") return trimmed;
+  if (url.protocol === "http:" && isLoopbackHost(url.hostname)) return trimmed;
+  throw new Error(
+    "aias-memory: serviceUrl must use HTTPS for non-loopback destinations; " +
+      "plain HTTP is only allowed for loopback addresses (localhost, 127.0.0.0/8, ::1). " +
+      `Refusing: ${raw}`,
+  );
+};
+
+// The service assembles prompts, so its responses are treated as
+// untrusted input: only well-formed chat messages with known roles and
+// string content are accepted into the assembled prompt.
+const ALLOWED_ROLES = new Set(["system", "user", "assistant"]);
+
+const sanitizeMessages = (input: unknown): Array<{ role: string; content: string }> => {
+  if (!Array.isArray(input)) return [];
+  const out: Array<{ role: string; content: string }> = [];
+  for (const m of input) {
+    if (
+      m &&
+      typeof m === "object" &&
+      ALLOWED_ROLES.has((m as { role: unknown }).role as string) &&
+      typeof (m as { content: unknown }).content === "string"
+    ) {
+      const msg = m as { role: string; content: string };
+      out.push({ role: msg.role, content: msg.content });
+    }
+  }
+  return out;
+};
+
 export default {
   id: "aias-memory",
   name: "AiAS Memory for OpenClaw — powered by NEDB",
@@ -66,7 +119,13 @@ export default {
     const cfg = api.pluginConfig ?? {};
     if (cfg.enabled === false) return;
 
-    const serviceUrl = (cfg.serviceUrl ?? DEFAULT_SERVICE_URL).replace(/\/$/, "");
+    let serviceUrl: string;
+    try {
+      serviceUrl = resolveServiceUrl(cfg.serviceUrl ?? DEFAULT_SERVICE_URL);
+    } catch (err) {
+      api.logger?.error?.(String(err));
+      return;
+    }
     const workspaceId = cfg.workspaceId ?? "openclaw";
     const agentId = cfg.agentId;
 
@@ -75,6 +134,7 @@ export default {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
+        redirect: "error",
       });
       if (!res.ok) throw new Error(`aias-memory ${path}: HTTP ${res.status}`);
       return res.json();
@@ -113,8 +173,9 @@ export default {
             user: params.sessionKey,
             user_message: lastOf(params.messages, "user"),
           });
-          if (Array.isArray(data.messages) && data.messages.length > 0) {
-            return { messages: data.messages };
+          const clean = sanitizeMessages((data as { messages?: unknown }).messages);
+          if (clean.length > 0) {
+            return { messages: clean };
           }
         } catch (err) {
           api.logger?.warn?.(`aias-memory: assemble failed (${String(err)}); passing messages through`);

@@ -149,6 +149,21 @@ This plugin is one piece of a larger workshop. Everything below is built by INTE
 - **Models**, our published weights: https://huggingface.co/Interchained
 - **GitHub**: https://github.com/aiassistsecure
 
+
+## Security
+
+Conversation turns and session identifiers are sent to the memory
+service you configure, and the service's assembled response becomes
+part of the prompt. Run the service where that is safe:
+
+* The default is loopback, http://127.0.0.1:8000, on the same machine
+  as the gateway. Traffic never leaves the box.
+* The plugin enforces transport policy: plain HTTP is accepted only
+  for loopback addresses (localhost, 127.0.0.0/8, ::1). Any remote
+  serviceUrl must be HTTPS, or the plugin refuses to register.
+* Service responses are validated before use: only well-formed
+  messages with known roles and string content enter the prompt.
+
 Signed,
 
 **Mark A Evans Jr.**, INTERCHAINED LLC
