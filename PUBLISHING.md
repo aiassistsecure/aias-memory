@@ -33,17 +33,19 @@ The channels are a pipeline, not alternatives:
 
 ## Publish-time checklist
 
-- [ ] Public GitHub repo created under the org; this directory pushed as-is.
-- [ ] `openclaw/package.json`: add the required ClawHub compatibility
+- [x] Public GitHub repo created under the org; this directory pushed as-is.
+- [x] `openclaw/package.json`: add the required ClawHub compatibility
       metadata before publishing — `openclaw.compat.pluginApi` and
       `openclaw.build.openclawVersion`, set to the current OpenClaw
       release's values. The `--dry-run` publish validates them; installs
       fail closed on incompatible hosts.
-- [ ] Publishing GitHub account passes ClawHub's age gate (accounts must be
+- [x] Publishing GitHub account passes ClawHub's age gate (accounts must be
       old enough to upload).
-- [ ] `tests/smoke.py` and `demo.py` green on the exact tree being published.
+- [x] `tests/smoke.py` and `demo.py` green on the exact tree being published.
 - [ ] Automated registry scans pass (ClawHub scans every release; releases
       that fail are held from public surfaces).
 
-Nothing in this file is a step that has been taken. Publishing is a release
-decision and happens only on the owner's word.
+Status, 2026-11-13: published on the owner's word. GitHub release v1.0.0 is
+live, and the ClawHub listing (@interchained/openclaw-aias-memory 1.0.0) is
+submitted and pending the registry's security scans, the one box above
+still open.
