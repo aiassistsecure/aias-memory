@@ -1,1 +1,29 @@
-{"author":"INTERCHAINED LLC","description":"AiAS Memory for OpenClaw, powered by NEDB. A drop-in context-engine plugin that gives OpenClaw extracted fact memory, a discussion window, and broadcast directives/KB, all stored in NEDB.","keywords":["openclaw","openclaw-plugin","context-engine","memory","nedb","aias"],"license":"MIT","main":"index.ts","name":"@interchained/openclaw-aias-memory","openclaw":{"build":{"openclawVersion":"2026.3.24-beta.2"},"compat":{"minGatewayVersion":"2026.3.24-beta.2","pluginApi":">=2026.3.24-beta.2"},"extensions":["index.ts"]},"type":"module","version":"1.0.0"}
+{
+  "author": "INTERCHAINED LLC",
+  "description": "AiAS Memory for OpenClaw, powered by NEDB. A drop-in context-engine plugin that gives OpenClaw extracted fact memory, a discussion window, and broadcast directives/KB, all stored in NEDB.",
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "context-engine",
+    "memory",
+    "nedb",
+    "aias"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@interchained/openclaw-aias-memory",
+  "openclaw": {
+    "build": {
+      "openclawVersion": "2026.3.24-beta.2"
+    },
+    "compat": {
+      "minGatewayVersion": "2026.3.24-beta.2",
+      "pluginApi": ">=2026.3.24-beta.2"
+    },
+    "extensions": [
+      "index.ts"
+    ]
+  },
+  "type": "module",
+  "version": "1.0.0"
+}

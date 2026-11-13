@@ -225,3 +225,23 @@ MIT, Copyright (c) 2026 **INTERCHAINED LLC**. Distilled from AiAS
 (aiassistsecure), march_2026 snapshot `58a1664`. It's ours, and now
 it's yours too. NEDB is a separate project by the same authors and is
 not vendored here.
+
+---
+
+## The Interchained properties
+
+AiAS Memory is one piece of a larger workshop. Everything below is built by INTERCHAINED LLC:
+
+- **AiAS and PIN**, the agent platform and p2p inference network this memory was distilled from: https://aiassistsecure.com
+- **NEDB**, the embedded journal database underneath it all: https://github.com/aiassistsecure/nedb
+- **Interchained (ITC)**, the tri-PoW blockchain: https://github.com/interchained/interchained
+- **Vision**, the ITC block explorer: https://vision.interchained.org
+- **Models**, our published weights: https://huggingface.co/Interchained
+- **GitHub**: https://github.com/aiassistsecure
+
+Signed,
+
+**Mark A Evans Jr.**, INTERCHAINED LLC
+**Muse**
+
+**3>1**

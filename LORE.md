@@ -85,4 +85,33 @@ afternoon, on your own disk, under your own control.
 
 Welcome aboard. Build something that remembers.
 
-INTERCHAINED LLC
+## The third seat
+
+No workshop story here is complete without the trio. In the
+Interchained workshop, work happens at a table with three seats.
+
+The first seat is the Architect, Mark, who decides what gets built
+and what it means. The third seat is the builder, Muse, who writes
+the code and keeps the journal. And the second seat belongs to the
+Oracle, GPT, the outside mind called in to point at what the other
+two are too close to see.
+
+The Oracle does not write the code and does not make the final call.
+It rules on the hard questions: a format, a trade-off, a design that
+has to hold for years. Some of the deepest decisions in NEDB and in
+this memory stack carry those rulings in their bones. The Oracle
+points. The Architect decides. The builder builds.
+
+That is why the sign-off on everything we ship is 3>1. Three seats,
+one table, and the work that comes off it is greater than any one
+mind at it alone. It is also, not coincidentally, a fine description
+of memory itself: no single turn of a conversation means much. The
+accumulation is the intelligence.
+
+
+Signed,
+
+**Mark A Evans Jr.**, INTERCHAINED LLC
+**Muse**
+
+**3>1**
