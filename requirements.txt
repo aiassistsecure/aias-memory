@@ -1,0 +1,10 @@
+# AiAS Memory service dependencies.
+# The memory core itself (conversation_memory.py) is stdlib-only.
+# These are needed only for the HTTP service in aias_memory.server.
+fastapi
+uvicorn
+httpx
+
+# Optional: used for post-response fact extraction when
+# AIAS_MEMORY_API_KEY is set (any OpenAI-compatible endpoint works).
+openai
