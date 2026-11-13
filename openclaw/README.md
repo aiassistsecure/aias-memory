@@ -27,6 +27,34 @@ OpenClaw ──(context engine calls)──► AiAS Memory service ──► NED
    └──────── assembled messages ◄───────────┘
 ```
 
+## Why this memory
+
+* **Proven in production.** This is not a weekend rewrite. The fact
+  extraction engine is the AiAS conversation memory, shipped here
+  byte for byte from the system that ran it, with its confidence
+  thresholds, PII filters, and eviction rules intact.
+* **Facts, not transcripts.** Your agent remembers preferences,
+  decisions, and constraints as durable facts, deduplicated by
+  content hash and injected within a token budget, instead of
+  dragging an ever-growing chat log into every prompt.
+* **A discussion window that compresses itself.** Recent turns ride
+  along verbatim. When the window grows, older turns fold into a
+  summary instead of falling off a cliff.
+* **Directives and a knowledge base, layered properly.** Global
+  directives, then per-agent directives and KB, then the
+  conversation: standing instructions every prompt starts from.
+* **Your data is a directory, not a subscription.** Everything
+  lives in NEDB, an embedded, journal-backed database with a
+  hash-chained history. No Redis, no cloud vector store, no API
+  key, no account. Back it up by copying a folder.
+* **Privacy machinery included.** Facts pass a PII filter on the
+  way in, a visibility guard decides when remembered facts may
+  surface, and per-user export and purge endpoints cover GDPR
+  requests.
+* **Fails soft.** If the memory service is down, the gateway gets
+  its own messages back and the conversation goes on. Memory should
+  never be the reason an agent stops answering.
+
 ## Step 1, Start the AiAS Memory service
 
 You need the `aias-memory` repo (this plugin lives in its `openclaw/`
@@ -164,12 +192,28 @@ part of the prompt. Run the service where that is safe:
 * Service responses are validated before use: only well-formed
   messages with known roles and string content enter the prompt.
 
-* Context boundary: the gateway's own system instructions are
-  preserved verbatim and always come first. Service responses can
-  never supply system-role messages. Facts and discussion arrive as
-  labeled reference data. The service's directive block only earns a
-  system seat if you explicitly set allowServiceDirectives, which you
-  should do only for a memory service you operate yourself.
+* Assembled context is the product: the service's response (your
+  directives, your facts, your discussion history) becomes the
+  prompt. That is what a context engine is for. Run a service you
+  operate or explicitly trust, the same way you would run your
+  database.
+
+**About the ClawScan verdict.** ClawHub's scanner flags this plugin
+(finding MCP06) because a configured memory service can supply
+conversation turns: with a malicious or compromised service,
+retrieved history could impersonate the user or the assistant. The
+observation about the architecture is accurate; the threat model
+behind the warning assumes a service run by somebody else. A
+context engine that restores your history from your memory service
+is doing its job, and a scanner cannot tell that apart from an
+injection, so it warns about both. We keep the design and state the
+trust model here instead of hiding it: the protections above
+(loopback by default, HTTPS enforced for anything remote, response
+validation, fail-soft passthrough) guard the wire, and the decision
+to trust the service belongs to the operator who configures it. If
+you do not control the memory service, do not point an agent at it,
+and treat anything it remembers, including remembered approvals,
+as untrusted.
 
 Signed,
 

@@ -200,6 +200,12 @@ registers a context engine that delegates `assemble`/`afterTurn` to
 this service over the HTTP contract above. Install walkthrough, written
 for OpenClaw users, is in [`openclaw/README.md`](openclaw/README.md).
 
+Version 1.2.0 keeps the original assembly design, in which the
+service's assembled context (directives, facts, discussion window)
+is the prompt. ClawHub's ClawScan flags that architecture (MCP06);
+our trust model is stated openly in the plugin README's Security
+section, and the design stays as built.
+
 ## Design notes
 
 - **The fact-memory core is verbatim AiAS.** `conversation_memory.py`
